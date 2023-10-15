@@ -7,7 +7,7 @@ check_crontab() {
 }
 
 enumerate() {
-	#enumerate system
+	# enumerate system
 	date -u  >> sysinfo.txt
 	uname -a >> sysinfo.txt
 
