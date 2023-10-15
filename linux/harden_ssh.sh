@@ -100,8 +100,6 @@ function quick_config() {
   disable_pw
   disable_rhosts
   warning_banner
-  selinux_check
-  firewalld_check
 }
 
 quick_config
