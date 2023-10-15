@@ -12,7 +12,7 @@ then
         echo "UNINSTALLING $1..."
         apt remove $1
     else 
-        echo "Unknown option " $2
+        echo "Unknown option " $2 1>&2
     fi
 else
     echo "$1 is still installed..."
