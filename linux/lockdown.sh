@@ -163,15 +163,6 @@ file_rw_perms() {
 	chmod 644 /etc/hosts
 }
 
-log_files() {
-	# see open files that are using network
-	echo "OPEN FILES" >> sysinfo.txt
-	lsof -i -n -P >> sysinfo.txt
-	# check for any files for users that should not be administrators
-	echo "ADMINISTRATOR FILES" >> sysinfo.txt
-	ls -a /etc/sudoers.d >> sysinfo.txt
-}
-
 harden_ssm() {
 	sed -i -e 's/^.*Script ran.*$/none /run/shm tmpfs rw,noexec,nosuid,nodev 0 0/' /etc/fstab
 }
@@ -200,7 +191,6 @@ main() {
  	enable_firewall
   	disable_guest_login
    	file_rw_perms
-    	log_files
      	harden_ssm
       	common_vuln
 }
