@@ -138,13 +138,71 @@ install_tools() {
 	fi
 }
 
+enable_firewall() {
+	ufw enable
+	ufw default deny incoming
+	ufw default allow outgoing
+	ufw deny 1337
+}
+
+disable_guest_login() {
+	gpasswd -d guest sudo
+	sed -i -e 's/^.*[SeatDefaults].*$/[SeatDefaults] allow-guest=false/' /etc/lightdm/lightdm.conf
+}
+
+file_rw_perms() {
+	chmod 644 /etc/passwd
+	chmod 640 /etc/shadow
+	chmod 644 /etc/group
+	chmod 640 .bash_history
+	# set HOSTS file to defaults
+	chmod 777 /etc/hosts
+	cp /etc/hosts ~/Desktop/backups/
+	echo > /etc/hosts
+	echo -e "127.0.0.1 localhost\n127.0.1.1 $USER\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters" >> /etc/hosts
+	chmod 644 /etc/hosts
+}
+
+log_files() {
+	# see open files that are using network
+	echo "OPEN FILES" >> sysinfo.txt
+	lsof -i -n -P >> sysinfo.txt
+	# check for any files for users that should not be administrators
+	echo "ADMINISTRATOR FILES" >> sysinfo.txt
+	ls -a /etc/sudoers.d >> sysinfo.txt
+}
+
+harden_ssm() {
+	sed -i -e 's/^.*Script ran.*$/none /run/shm tmpfs rw,noexec,nosuid,nodev 0 0/' /etc/fstab
+}
+
+common_vuln() {
+	# prevent shellshock bash vulnerability
+	env i='() { :;}; echo Your system is Bash vulnerable' bash -c "echo Bash vulnerability test"
+	# disable irqbalance
+	cp /etc/default/irqbalance ~/Desktop/backups/
+	echo > /etc/default/irqbalance
+	echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabled?\nENABLED=\"0\"\n#Balance the IRQs     only once?\nONESHOT=\"0\"" >> /etc/default/irqbalance
+}
+
+update_system() {
+	apt update -y
+	apt dist-upgrade -y
+}
 
 main() {
 	enumerate
 	backup_admin
 	list_users
 	change_passwords
+ 	update_system
 	install_tools
+ 	enable_firewall
+  	disable_guest_login
+   	file_rw_perms
+    	log_files
+     	harden_ssm
+      	common_vuln
 }
 
 main
