@@ -67,13 +67,18 @@ list_users() {
 }
 
 change_passwords() {
-    # change passwords to be STORNK
+    	# change passwords to be STORNK
+    	echo "SKIPPING BLUE-TEAM PASSWORD CHANGE"
 	for i in `cat user_list.txt`
 	do
-		PASS=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 31)
-		echo "Changing password for $i"
-		echo "$i,$PASS" >>  userlist.txt
-		echo -e "$PASS\n$PASS" | passwd $i
+		if [ "$i" != "blue-team" ]; then
+			PASS=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 31)
+			echo "Changing password for $i"
+			echo "$i,$PASS" >>  userlist.txt
+			echo -e "$PASS\n$PASS" | passwd $i
+		else
+			echo "NOT changing password for $i"
+		fi
 	done
 }
 
@@ -189,12 +194,12 @@ update_system() {
 }
 
 main() {
+	update_system
 	install_tools
 	enumerate
 	backup_admin
 	list_users
 	change_passwords
- 	update_system
  	enable_firewall
   	disable_guest_login
    	file_rw_perms
