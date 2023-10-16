@@ -14,7 +14,7 @@ function sshd_config_check() {
   if [[ -f $SSHD_CONF ]]; then
     echo "sshd_config found"
   else
-    echo -n "sshd_config not found at $SSHD_CONF, please specify path: "
+    echo -n "(ensure that openssh server is installed and enabled)\nsshd_config not found at $SSHD_CONF, please specify path: "
     read SSHD_CONF
     sshd_config_check
   fi
