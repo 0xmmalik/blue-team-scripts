@@ -124,13 +124,13 @@ install_tools() {
 	echo "$OS installing tools"
 
 	if [ "$OS" = "Ubuntu" ]; then
-		apt -y install fail2ban tripwire clamav inotify-tools epel-release
+		apt -y install net-tools fail2ban tripwire clamav inotify-tools epel-release
 
 	elif [ "$OS" = "Debian" ]; then
-		apt -y install fail2ban tripwire clamav inotify-tools epel-release
+		apt -y install net-tools fail2ban tripwire clamav inotify-tools epel-release
 
 	elif [ "$OS" = "CentOS Linux" ];then
-		yum -y install fail2ban tripwire clamav inotify-tools epel-release
+		yum -y install net-tools fail2ban tripwire clamav inotify-tools epel-release
 
 	else
 	echo "Not Ubuntu, Debian or CentOS, install tools manually"
@@ -182,12 +182,12 @@ update_system() {
 }
 
 main() {
+	install_tools
 	enumerate
 	backup_admin
 	list_users
 	change_passwords
  	update_system
-	install_tools
  	enable_firewall
   	disable_guest_login
    	file_rw_perms
