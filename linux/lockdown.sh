@@ -164,7 +164,8 @@ file_rw_perms() {
 }
 
 harden_ssm() {
-	sed -i -e 's/^.*Script ran.*$/none /run/shm tmpfs rw,noexec,nosuid,nodev 0 0/' /etc/fstab
+ 	# sed -i '$ a\tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0' /etc/fstab
+ 	awk '{tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0 >> /etc/fstab}'
 }
 
 common_vuln() {
@@ -174,6 +175,12 @@ common_vuln() {
 	cp /etc/default/irqbalance ~/Desktop/backups/
 	echo > /etc/default/irqbalance
 	echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabled?\nENABLED=\"0\"\n#Balance the IRQs     only once?\nONESHOT=\"0\"" >> /etc/default/irqbalance
+}
+
+check_root() {
+	# displays all accounts with UID set to 0
+	awk -F: '($3 == "0") {print}' /etc/passwd
+ 	# expected: root:x:0:0:root:/root:/bin/bash
 }
 
 update_system() {
