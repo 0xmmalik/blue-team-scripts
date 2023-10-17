@@ -129,13 +129,13 @@ install_tools() {
 	echo "$OS installing tools"
 
 	if [ "$OS" = "Ubuntu" ]; then
-		apt -y install net-tools fail2ban tripwire clamav inotify-tools epel-release
+		apt -y install net-tools fail2ban tripwire clamav inotify-tools epel-release python3-pip
 
 	elif [ "$OS" = "Debian" ]; then
-		apt -y install net-tools fail2ban tripwire clamav inotify-tools epel-release
+		apt -y install net-tools fail2ban tripwire clamav inotify-tools epel-release python3-pip
 
 	elif [ "$OS" = "CentOS Linux" ];then
-		yum -y install net-tools fail2ban tripwire clamav inotify-tools epel-release
+		yum -y install net-tools fail2ban tripwire clamav inotify-tools epel-release python3-pip
 
 	else
 	echo "Not Ubuntu, Debian or CentOS, install tools manually"
