@@ -140,8 +140,11 @@ $Params = @{
     "LogMaxSizeKilobytes"  = "32767"
     "NotifyOnListen"       = "True"
 }
-"NET FIREWALL RULES:" >> sysdata.txt
-Set-NetFirewallProfile @Params -all >> sysdata.txt
+Set-NetFirewallProfile @Params -all
+"OUTBOUND FIREWALL RULES:" >> sysdata.txt
+Get-NetFirewallRule | Where {$_.Enabled -eq 'True' –and $_.Direction –eq 'Outbound'} >> sysdata.txt
+"INBOUND FIREWALL RULES:" >> sysdata.txt
+Get-NetFirewallRule | Where {$_.Enabled -eq 'True' –and $_.Direction –eq 'Inbound'} >> sysdata.txt
 
 Write-Output "attempting some basic hardening..."
 $ErrorActionPreference = "Stop"
