@@ -140,7 +140,8 @@ $Params = @{
     "LogMaxSizeKilobytes"  = "32767"
     "NotifyOnListen"       = "True"
 }
-Set-NetFirewallProfile @Params -all
+"NET FIREWALL RULES:" >> sysdata.txt
+Set-NetFirewallProfile @Params -all >> sysdata.txt
 
 Write-Output "attempting some basic hardening..."
 $ErrorActionPreference = "Stop"
