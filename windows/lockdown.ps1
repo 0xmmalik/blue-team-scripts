@@ -229,3 +229,11 @@ try {
 catch {
     Write-Output "failed..."
 }
+
+try {
+    Write-Output "attempting to run posh-secmod (requires internet connection)..."
+    iex (New-Object Net.WebClient).DownloadString("https://gist.github.com/darkoperator/6404266/raw/982cae410fc41f6c64e69d91fc3dda777554f241/gistfile1.ps1")
+}
+catch {
+    Write-Output "failed..."
+}
